@@ -2,7 +2,6 @@ package domainutil
 
 import (
 	"strings"
-
 	"golang.org/x/net/idna"
 )
 
@@ -43,6 +42,27 @@ func DomainSuffix(url string) string {
 	return ""
 }
 
+// IsTLD returns true if given domain is tld
+func IsTLD(url string) bool {
+	domain, _ := stripURLParts(url), ""
+	parts := strings.Split(domain, ".")
+	currentTld := *tlds
+	if len(parts) > 1 {
+		for i := len(parts) - 1; i >= 0; i-- {
+			if _, found := currentTld[parts[i]]; !found {
+				return false
+			} else {
+				tldEntry := currentTld[parts[i]];
+				if tldEntry != nil {
+					currentTld = *tldEntry
+				}
+				continue
+			}
+		}
+	}
+	return true
+}
+
 // Domain returns top level domain from url string.
 // If no domain is found in provided url, this function returns empty string.
 // If no TLD is found in provided url, this function returns empty string.
@@ -51,7 +71,6 @@ func Domain(url string) string {
 	parts := strings.Split(domain, ".")
 	currentTld := *tlds
 	foundTld := false
-
 	// Cycle trough parts in reverse
 	if len(parts) > 1 {
 		for i := len(parts) - 1; i >= 0; i-- {
@@ -163,3 +182,4 @@ func Password(url string) string {
 	}
 	return auth[1]
 }
+
