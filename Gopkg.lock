@@ -5,7 +5,7 @@
   branch = "master"
   name = "golang.org/x/net"
   packages = ["idna"]
-  revision = "c39426892332e1bb5ec0a434a079bf82f5d30c54"
+  revision = "351d144fa1fc0bd934e2408202be0c29f25e35a0"
 
 [[projects]]
   name = "golang.org/x/text"
