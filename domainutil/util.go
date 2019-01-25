@@ -49,14 +49,18 @@ func IsTLD(url string) bool {
 	currentTld := *tlds
 	if len(parts) > 1 {
 		for i := len(parts) - 1; i >= 0; i-- {
+			if currentTld == nil {
+				return false
+			}
 			if _, found := currentTld[parts[i]]; !found {
 				return false
 			} else {
 				tldEntry := currentTld[parts[i]];
 				if tldEntry != nil {
 					currentTld = *tldEntry
+					continue
 				}
-				continue
+				currentTld = nil
 			}
 		}
 	}
@@ -182,4 +186,5 @@ func Password(url string) string {
 	}
 	return auth[1]
 }
+
 
