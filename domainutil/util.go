@@ -5,6 +5,19 @@ import (
 	"golang.org/x/net/idna"
 )
 
+func TopDomain(name string) (string, bool) {
+	var top string
+	dotCount := strings.Count(name, ".")
+	if HasSubdomain(name) || dotCount >= 2 {
+		// try to retrieve top domain
+		top = Domain(name)
+		if top == "" {
+			fields := strings.Split(name, ".")
+			top = strings.Join(fields[len(fields)-2:], ".")
+		}
+	}
+	return top, top != ""
+}
 // HasSubdomain reports whether domain contains any subdomain.
 func HasSubdomain(domain string) bool {
 	domain, top := stripURLParts(domain), Domain(domain)
